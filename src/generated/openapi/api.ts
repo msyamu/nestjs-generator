@@ -101,6 +101,39 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {Login} [login] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout: async (login?: Login, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auths/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(login, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -123,6 +156,18 @@ export const AuthApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['AuthApi.login']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {Login} [login] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logout(login?: Login, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(login, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.logout']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -141,6 +186,15 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          */
         login(login?: Login, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.login(login, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {Login} [login] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout(login?: Login, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.logout(login, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -161,6 +215,17 @@ export class AuthApi extends BaseAPI {
      */
     public login(login?: Login, options?: RawAxiosRequestConfig) {
         return AuthApiFp(this.configuration).login(login, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {Login} [login] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public logout(login?: Login, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).logout(login, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

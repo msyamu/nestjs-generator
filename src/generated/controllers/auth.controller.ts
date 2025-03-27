@@ -4,14 +4,14 @@ import { Request, Response } from 'express';
 import { Auth } from '../../decorators/auth';
 import { AuthController } from './interfaces/auth.controller';
 
-@Controller('/auths/login')
+@Controller('/auths')
 export class AuthBaseController {
   constructor(
     @Inject('AuthController')
     private readonly authController: AuthController,
   ) {}
 
-  @Post()
+  @Post('login')
   @HttpCode(204)
   @Auth(false)
   async login(
