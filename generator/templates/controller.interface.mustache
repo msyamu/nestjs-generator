@@ -1,0 +1,13 @@
+{{#imports}}
+import { {{names}} } from '{{{importFrom}}}';
+{{/imports}}
+
+export interface {{interfaceName}} {
+{{#operations}}
+  {{operationId}}{{^parameters.length}}(){{/parameters.length}}{{#parameters.length}}(
+  {{#parameters}}
+    {{name}}{{^required}}?{{/required}}: {{type}},
+  {{/parameters}}
+  ){{/parameters.length}}: Promise<{{responseType}}>;
+{{/operations}}
+}

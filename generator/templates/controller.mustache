@@ -1,0 +1,32 @@
+{{#imports}}
+import { {{names}} } from '{{{importFrom}}}';
+{{/imports}}
+
+@Controller('{{{ basePath }}}')
+export class {{className}} {
+  constructor(
+    @Inject('{{interfaceName}}')
+    private readonly {{interfaceVariableName}}: {{interfaceName}},
+  ) {}
+
+  {{#operations}}
+  @{{httpMethod}}({{#path}}'{{{ path }}}'{{/path}})
+  {{#isHttpCodeDifferent}}
+  @HttpCode({{responseStatus}})
+  {{/isHttpCodeDifferent}}
+  {{#customDecorators}}
+  @{{{name}}}({{#args}}{{{args}}}{{/args}})
+  {{/customDecorators}}
+  async {{operationId}}{{^allParameters.length}}(){{/allParameters.length}}{{#allParameters.length}}(
+    {{#allParameters}}
+    {{#customDecorators}}@{{{name}}}({{#args}}{{{args}}}{{/args}}) {{/customDecorators}}{{#decorator}}@{{decorator}}({{#parameterName}}'{{parameterName}}'{{/parameterName}}) {{/decorator}}{{name}}{{^required}}?{{/required}}: {{type}},
+    {{/allParameters}}
+  ){{/allParameters.length}}: Promise<{{{ responseType }}}> {
+    return this.{{interfaceVariableName}}.{{operationId}}{{^allParameters.length}}(){{/allParameters.length}}{{#allParameters.length}}(
+      {{#allParameters}}
+      {{name}},
+      {{/allParameters}}
+    ){{/allParameters.length}};
+  }
+  {{/operations}}
+}
