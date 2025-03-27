@@ -25,6 +25,20 @@ paths:
       responses:
         "204":
           description: A successful login
+  /auths/logout:
+    post:
+      operationId: logout
+      tags:
+        - auth
+      x-ignore-generate: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "201":
+          description: A successful login
   /users:
     get:
       operationId: listUsers

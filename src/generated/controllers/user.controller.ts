@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Inject, Post, Query } from '@nestjs/common';
 import { User } from '@openapi';
 import { Auth } from '../../decorators/auth';
 import { UserController } from './interfaces/user.controller';
@@ -23,6 +23,7 @@ export class UserBaseController {
     );
   }
   @Post()
+  @HttpCode(201)
   async createUser(
     @Auth.UserId() currentUserId: number,
     @Body() body: User,
