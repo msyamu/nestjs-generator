@@ -415,7 +415,7 @@ function extractOperationData(
     requestBody,
     responseType: response.type,
     responseStatus: response.status,
-    isHttpCodeDifferent: response.status !== 200,
+    isHttpCodeDifferent: response.status !== getDefaultStatusCode(method),
     hasParams,
     hasQuery,
     hasBody,
@@ -467,6 +467,15 @@ function getNestDecoratorForParameter(param: { location: string }): string {
       return 'Cookies';
     default:
       return '';
+  }
+}
+
+function getDefaultStatusCode(method: string): number {
+  switch (method.toLowerCase()) {
+    case 'post':
+      return 201;
+    default:
+      return 200;
   }
 }
 
